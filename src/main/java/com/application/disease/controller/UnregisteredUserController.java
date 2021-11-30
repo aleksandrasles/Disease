@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -19,6 +20,11 @@ public class UnregisteredUserController {
     @RequestMapping("/")
     public @ResponseBody String greeting() {
         return "homepage";
+    }
+
+    @RequestMapping("/homepage")
+    public ModelAndView homePage() {
+        return new ModelAndView("dashboards/admin");
     }
 
     @GetMapping("/find")

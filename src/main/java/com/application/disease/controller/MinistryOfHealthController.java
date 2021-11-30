@@ -3,19 +3,21 @@ package com.application.disease.controller;
 import com.application.disease.dao.DiseaseRepository;
 import com.application.disease.dao.RegionRepository;
 import com.application.disease.model.DiseaseMetrics;
-import com.application.disease.model.dto.RequestDto;
 import com.application.disease.service.DiseaseMetricsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
-@RequestMapping("/api/v1/statistical_department")
+@RequestMapping("/api/v1/ministry_of_health")
 @RestController
-public class StatisticalDepartmentController {
+public class MinistryOfHealthController {
 
     @Autowired
     private RegionRepository regionRepository;
@@ -37,18 +39,10 @@ public class StatisticalDepartmentController {
         return new ResponseEntity<>(diseaseMetricsService.findDiseaseMetricsWithParams(diseaseName, regionName), HttpStatus.OK);
     }
 
-    @PostMapping("/add_new")
-    public ResponseEntity<DiseaseMetrics> addNewDiseaseMetricsOrUpdate(@RequestBody RequestDto requestDto){
-        if(requestDto == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        if (diseaseRepository.findByName(requestDto.getDiseaseName()) == null ||
-                regionRepository.findByName(requestDto.getRegionName()) == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        DiseaseMetrics diseaseMetrics = null;
-        diseaseMetrics = diseaseMetricsService.updateDiseaseMetricsByRequestDto(diseaseMetrics, requestDto);
-        return new ResponseEntity<>(diseaseMetrics, HttpStatus.OK);
+    @GetMapping("/statistics")
+    public ResponseEntity<List<DiseaseMetrics>> getStatisticsWithParams(
+            @RequestParam(required = false) String diseaseName, @RequestParam(required = false) String regionName,
+            @RequestParam(required = false) String startPeriod, @RequestParam(required = false) String endPeriod) {
+        return new ResponseEntity<>(diseaseMetricsService.findDiseaseMetricsWithParams(diseaseName, regionName), HttpStatus.OK);
     }
 }

@@ -16,7 +16,7 @@ public interface UserRepository {
 
     User findUserById(String id);
 
-    User findUserEmail(String email);
+    Optional<User> findByEmail(String email);
 
     List<User> findAllUsersByFilter(Query query);
 

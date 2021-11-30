@@ -34,9 +34,9 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User findUserEmail(String email) {
+    public Optional<User> findByEmail(String email) {
         Query query = Query.query(Criteria.where("email").is(email));
-        return mt.findOne(query, User.class);
+        return Optional.of(mt.findOne(query, User.class));
     }
 
     @Override

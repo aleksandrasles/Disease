@@ -5,17 +5,26 @@ import com.application.disease.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
-import java.util.UUID;
 
 @RequestMapping("/api/v1/admin")
 @RestController
 public class AdminController {
 
     @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
     private UserRepository userRepository;
+
+    @RequestMapping("/homepage")
+    public ModelAndView homePage() {
+        return new ModelAndView("dashboards/admin");
+    }
 
     @GetMapping("/users/{id}")
     public ResponseEntity<User> getUser(@PathVariable("id") String id){
@@ -29,7 +38,7 @@ public class AdminController {
         return new ResponseEntity<>(userRepository.findUserById(id), HttpStatus.OK);
     }
 
-    @GetMapping("/users/all")
+    @GetMapping("/users")
     public ResponseEntity<List<User>> getAllUsers(){
         return new ResponseEntity<>(userRepository.findAllUsers(), HttpStatus.OK);
     }
@@ -42,13 +51,13 @@ public class AdminController {
         if(userRepository.findUserById(id) == null || user == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        user.setId(id);
-        return new ResponseEntity<>(userRepository.updateUser(user),HttpStatus.OK);
+        User updatedUser = updateUserFields(id, user);
+        return new ResponseEntity<>(userRepository.updateUser(updatedUser),HttpStatus.OK);
     }
 
-    @PostMapping("/users/new")
+    @PostMapping("/users/add")
     public ResponseEntity<User> registerNewUser(@RequestBody User user){
-        user.setId(UUID.randomUUID().toString());
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.addUser(user);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
@@ -57,6 +66,15 @@ public class AdminController {
     public ResponseEntity<User> deleteUserById(@PathVariable("id") String id){
         userRepository.deleteUser(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    private User updateUserFields(String id, User newUser){
+        User user = userRepository.findUserById(id);
+        user.setFirstName(newUser.getFirstName());
+        user.setLastName(newUser.getLastName());
+        user.setEmail(newUser.getEmail());
+        user.setEnabled(newUser.getEnabled());
+        return user;
     }
 
 }

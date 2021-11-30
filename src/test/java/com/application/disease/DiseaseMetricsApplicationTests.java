@@ -31,7 +31,7 @@ class DiseaseMetricsApplicationTests {
     @Test
     void addUserToDbTest() {
         User user = new User("Liubov", "Ternenko", "love.ternenko@ukr.net", "lovve4n",
-                UserRoles.MINISTRY_OF_HEALTH
+                UserRoles.ROLE_MINISTRY_OF_HEALTH
         );
         assertEquals(userRepository.addUser(user), user);
     }
@@ -39,7 +39,7 @@ class DiseaseMetricsApplicationTests {
     @Test
     void findUserByIdTest() {
         User user = new User("Petro", "Geraschenko", "pitr.gera@ukr.net", "pitGer45",
-                UserRoles.STATISTICAL_DEPARTMENT
+                UserRoles.ROLE_STATISTICAL_DEPARTMENT
         );
         user.setId(UUID.randomUUID().toString());
         userRepository.addUser(user);
@@ -49,7 +49,7 @@ class DiseaseMetricsApplicationTests {
     @Test
     void findUserByEmailInDbTest() {
         User user = new User("Liubov", "Ternenko", "love.ternenko@ukr.net", "lovve4n",
-                UserRoles.MINISTRY_OF_HEALTH
+                UserRoles.ROLE_MINISTRY_OF_HEALTH
         );
         user.setId(UUID.randomUUID().toString());
         userRepository.addUser(user);
@@ -60,7 +60,8 @@ class DiseaseMetricsApplicationTests {
     @Test
     void updateUserFieldInDbTest(){
         User user = new User("Liubov", "Ternenko", "love.ternenko@ukr.net", "lovve4n",
-                UserRoles.MINISTRY_OF_HEALTH
+                UserRoles.ROLE_MINISTRY_OF_HEALTH
+
         );
         userRepository.addUser(user);
         user.setPassword("kdjfjfnK");
@@ -72,7 +73,7 @@ class DiseaseMetricsApplicationTests {
     @Test
     void deleteUserFromDbTest(){
         User user = new User("Liubov", "Ternenko", "love.ternenko@ukr.net", "lovve4n",
-                UserRoles.MINISTRY_OF_HEALTH
+                UserRoles.ROLE_MINISTRY_OF_HEALTH
         );
         user.setId(UUID.randomUUID().toString());
         assertNotNull(userRepository.addUser(user));
@@ -83,10 +84,10 @@ class DiseaseMetricsApplicationTests {
     @Test
     void findAllUsersTest(){
         User user1 = new User("Liubov", "Ternenko", "love.ternenko@ukr.net", "lovve4n",
-                UserRoles.MINISTRY_OF_HEALTH
+                UserRoles.ROLE_MINISTRY_OF_HEALTH
         );
         User user2 = new User("Petro", "Geraschenko", "pitr.gera@ukr.net", "pitGer45",
-                UserRoles.STATISTICAL_DEPARTMENT
+                UserRoles.ROLE_STATISTICAL_DEPARTMENT
         );
         userRepository.addUser(user1);
         userRepository.addUser(user2);

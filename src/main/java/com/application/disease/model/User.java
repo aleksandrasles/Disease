@@ -14,7 +14,6 @@ import java.util.Collections;
 @Setter
 @EqualsAndHashCode
 @NoArgsConstructor
-@AllArgsConstructor
 @Document("users")
 public class User implements UserDetails {
 
@@ -26,7 +25,7 @@ public class User implements UserDetails {
     private String password;
     private UserRoles userRoles;
     private Boolean locked = false;
-    private Boolean enabled = true;
+    private Boolean enabled = false;
 
     public User(String firstName,
                 String lastName,

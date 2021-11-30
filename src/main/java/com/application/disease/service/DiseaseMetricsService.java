@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -51,4 +50,17 @@ public class DiseaseMetricsService {
 
         return diseaseMetricsRepository.findAll();
     }
+
+    public List<DiseaseMetrics> findDiseaseMetricsDuringPeriod(String diseaseName, String regionName, String startedAt, String endedAt) {
+        List<DiseaseMetrics> diseaseMetricsList = findDiseaseMetricsWithParams(diseaseName, regionName);
+        if (startedAt != null && endedAt != null) {
+          //  LocalDateTime lastTimeOfPeriod = LocalDateTime.now().minusDays(days);
+            return diseaseMetricsList;
+        }
+        return null;
+
+    }
+
+
+
 }

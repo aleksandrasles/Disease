@@ -1,3 +1,3 @@
 package com.application.disease.model;
 
-public enum UserRoles {ADMIN, STATISTICAL_DEPARTMENT, MINISTRY_OF_HEALTH, UNREGISTERED_USER}
+public enum UserRoles {ROLE_ADMIN, ROLE_STATISTICAL_DEPARTMENT, ROLE_MINISTRY_OF_HEALTH}

@@ -84,6 +84,6 @@ public class DiseaseMetrics {
         this.lastUpdatedAt = lastUpdatedAt;
     }
 
-    public LocalDateTime getCreatedAt(LocalDateTime createdAt) {return createdAt;}
+    public LocalDateTime getCreatedAt() {return createdAt;}
 
 }

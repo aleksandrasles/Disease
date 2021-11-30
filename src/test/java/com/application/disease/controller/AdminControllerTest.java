@@ -33,10 +33,10 @@ public class AdminControllerTest {
     void beforeEach() {
         mongoTemplate.dropCollection("users");
         User user1 = new User("Liubov", "Ternenko", "love.ternenko@ukr.net", "lovve4n",
-                UserRoles.MINISTRY_OF_HEALTH
+                UserRoles.ROLE_MINISTRY_OF_HEALTH
         );
         User user2 = new User("Petro", "Geraschenko", "pitr.gera@ukr.net", "pitGer45",
-                UserRoles.STATISTICAL_DEPARTMENT
+                UserRoles.ROLE_STATISTICAL_DEPARTMENT
         );
         user1.setId("1");
         user2.setId("2");
@@ -49,7 +49,7 @@ public class AdminControllerTest {
         ResponseEntity<String> response = restTemplate.getForEntity(
                 new URL("http://localhost:8080/api/v1/admin/users/1").toString(), String.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("{\"id\":\"1\",\"firstName\":\"Liubov\",\"lastName\":\"Ternenko\",\"email\":\"love.ternenko@ukr.net\",\"password\":\"lovve4n\",\"userRoles\":\"MINISTRY_OF_HEALTH\",\"locked\":false,\"enabled\":true,\"username\":\"love.ternenko@ukr.net\",\"accountNonExpired\":true,\"credentialsNonExpired\":true,\"authorities\":[{\"authority\":\"MINISTRY_OF_HEALTH\"}],\"accountNonLocked\":true}", response.getBody());
+        assertEquals("{\"id\":\"1\",\"firstName\":\"Liubov\",\"lastName\":\"Ternenko\",\"email\":\"love.ternenko@ukr.net\",\"password\":\"lovve4n\",\"userRoles\":\"MINISTRY_OF_HEALTH\",\"locked\":false,\"enabled\":true,\"username\":\"love.ternenko@ukr.net\",\"authorities\":[{\"authority\":\"MINISTRY_OF_HEALTH\"}],\"accountNonLocked\":true,\"accountNonExpired\":true,\"credentialsNonExpired\":true}", response.getBody());
     }
 
     @Test
@@ -65,7 +65,7 @@ public class AdminControllerTest {
         ResponseEntity<String> response = restTemplate.getForEntity(
                 new URL("http://localhost:8080/api/v1/admin/users/all").toString(), String.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("[{\"id\":\"1\",\"firstName\":\"Liubov\",\"lastName\":\"Ternenko\",\"email\":\"love.ternenko@ukr.net\",\"password\":\"lovve4n\",\"userRoles\":\"MINISTRY_OF_HEALTH\",\"locked\":false,\"enabled\":true,\"username\":\"love.ternenko@ukr.net\",\"accountNonExpired\":true,\"credentialsNonExpired\":true,\"authorities\":[{\"authority\":\"MINISTRY_OF_HEALTH\"}],\"accountNonLocked\":true},{\"id\":\"2\",\"firstName\":\"Petro\",\"lastName\":\"Geraschenko\",\"email\":\"pitr.gera@ukr.net\",\"password\":\"pitGer45\",\"userRoles\":\"STATISTICAL_DEPARTMENT\",\"locked\":false,\"enabled\":true,\"username\":\"pitr.gera@ukr.net\",\"accountNonExpired\":true,\"credentialsNonExpired\":true,\"authorities\":[{\"authority\":\"STATISTICAL_DEPARTMENT\"}],\"accountNonLocked\":true}]", response.getBody());
+        assertEquals("[{\"id\":\"1\",\"firstName\":\"Liubov\",\"lastName\":\"Ternenko\",\"email\":\"love.ternenko@ukr.net\",\"password\":\"lovve4n\",\"userRoles\":\"MINISTRY_OF_HEALTH\",\"locked\":false,\"enabled\":true,\"username\":\"love.ternenko@ukr.net\",\"authorities\":[{\"authority\":\"MINISTRY_OF_HEALTH\"}],\"accountNonLocked\":true,\"accountNonExpired\":true,\"credentialsNonExpired\":true},{\"id\":\"2\",\"firstName\":\"Petro\",\"lastName\":\"Geraschenko\",\"email\":\"pitr.gera@ukr.net\",\"password\":\"pitGer45\",\"userRoles\":\"STATISTICAL_DEPARTMENT\",\"locked\":false,\"enabled\":true,\"username\":\"pitr.gera@ukr.net\",\"authorities\":[{\"authority\":\"STATISTICAL_DEPARTMENT\"}],\"accountNonLocked\":true,\"accountNonExpired\":true,\"credentialsNonExpired\":true}]", response.getBody());
     }
 
     @Test
