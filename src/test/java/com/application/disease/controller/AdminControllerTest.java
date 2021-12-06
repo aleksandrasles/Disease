@@ -1,5 +1,5 @@
 package com.application.disease.controller;
-import com.application.disease.model.User;
+import com.application.disease.model.proxy.User;
 import com.application.disease.model.UserRoles;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

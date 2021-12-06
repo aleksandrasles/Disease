@@ -1,6 +1,6 @@
 package com.application.disease.dao.impl;
 
-import com.application.disease.model.User;
+import com.application.disease.model.proxy.User;
 import com.application.disease.dao.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;

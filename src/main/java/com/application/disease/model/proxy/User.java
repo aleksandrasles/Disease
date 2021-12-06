@@ -1,5 +1,6 @@
-package com.application.disease.model;
+package com.application.disease.model.proxy;
 
+import com.application.disease.model.UserRoles;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -15,7 +16,7 @@ import java.util.Collections;
 @EqualsAndHashCode
 @NoArgsConstructor
 @Document("users")
-public class User implements UserDetails {
+public class User extends RoleGetter implements UserDetails {
 
     @Id
     private String id;
@@ -23,7 +24,7 @@ public class User implements UserDetails {
     private String lastName;
     private String email;
     private String password;
-    private UserRoles userRoles;
+    private UserRoles userRoles = UserRoles.DEFAULT;
     private Boolean locked = false;
     private Boolean enabled = false;
 
@@ -87,5 +88,10 @@ public class User implements UserDetails {
     public User enable() {
         this.enabled = true;
         return this;
+    }
+
+    @Override
+    public String getRoleString() {
+        return getUserRoles().name();
     }
 }

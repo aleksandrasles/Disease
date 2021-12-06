@@ -1,7 +1,7 @@
 package com.application.disease.service;
 
 import com.application.disease.dao.UserRepository;
-import com.application.disease.model.User;
+import com.application.disease.model.proxy.User;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

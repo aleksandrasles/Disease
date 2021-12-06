@@ -1,6 +1,6 @@
 package com.application.disease.dao;
 
-import com.application.disease.model.User;
+import com.application.disease.model.proxy.User;
 import org.springframework.data.mongodb.core.query.Query;
 
 import java.util.List;

@@ -5,7 +5,7 @@ import com.application.disease.dao.RegionRepository;
 import com.application.disease.dao.UserRepository;
 import com.application.disease.model.Disease;
 import com.application.disease.model.Region;
-import com.application.disease.model.User;
+import com.application.disease.model.proxy.User;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

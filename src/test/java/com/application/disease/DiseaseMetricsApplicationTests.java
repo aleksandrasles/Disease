@@ -1,7 +1,7 @@
 package com.application.disease;
 
 import com.application.disease.dao.UserRepository;
-import com.application.disease.model.User;
+import com.application.disease.model.proxy.User;
 import com.application.disease.model.UserRoles;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

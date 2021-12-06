@@ -1,7 +1,7 @@
 package com.application.disease.controller;
 
 import com.application.disease.model.DiseaseMetrics;
-import com.application.disease.service.DiseaseMetricsService;
+import com.application.disease.service.DiseaseMetricsFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ import java.util.List;
 public class UnregisteredUserController {
 
     @Autowired
-    private DiseaseMetricsService diseaseMetricsService;
+    private DiseaseMetricsFacade diseaseMetricsFacade;
 
     @RequestMapping("/")
     public @ResponseBody String greeting() {
@@ -30,6 +30,6 @@ public class UnregisteredUserController {
     @GetMapping("/find")
     public ResponseEntity<List<DiseaseMetrics>> findDiseaseMetricsWithParams(
             @RequestParam(required = false) String diseaseName, @RequestParam(required = false) String regionName) {
-        return new ResponseEntity<>(diseaseMetricsService.findDiseaseMetricsWithParams(diseaseName, regionName), HttpStatus.OK);
+        return new ResponseEntity<>(diseaseMetricsFacade.findDiseaseMetricsWithParamsAndDate(diseaseName, regionName, "", ""), HttpStatus.OK);
     }
 }

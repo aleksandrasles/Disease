@@ -3,7 +3,7 @@ package com.application.disease.controller;
 import com.application.disease.dao.DiseaseRepository;
 import com.application.disease.dao.RegionRepository;
 import com.application.disease.model.DiseaseMetrics;
-import com.application.disease.service.DiseaseMetricsService;
+import com.application.disease.service.DiseaseMetricsFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,9 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.List;
 
 @RequestMapping("/api/v1/ministry_of_health")
@@ -29,7 +26,7 @@ public class MinistryOfHealthController {
     private DiseaseRepository diseaseRepository;
 
     @Autowired
-    private DiseaseMetricsService diseaseMetricsService;
+    private DiseaseMetricsFacade diseaseMetricsFacade;
 
     @RequestMapping("/homepage")
     public ModelAndView homePage() {
@@ -39,7 +36,7 @@ public class MinistryOfHealthController {
     @GetMapping("/find")
     public ResponseEntity<List<DiseaseMetrics>> findDiseaseMetricsWithParams(
             @RequestParam(required = false) String diseaseName, @RequestParam(required = false) String regionName) {
-        return new ResponseEntity<>(diseaseMetricsService.findDiseaseMetricsWithParams(diseaseName, regionName), HttpStatus.OK);
+        return new ResponseEntity<>(diseaseMetricsFacade.findDiseaseMetricsWithParamsAndDate(diseaseName, regionName, "", ""), HttpStatus.OK);
     }
 
     @GetMapping("/statistics")
@@ -47,6 +44,6 @@ public class MinistryOfHealthController {
             @RequestParam(required = false) String diseaseName, @RequestParam(required = false) String regionName,
             @RequestParam(required = false) String startPeriod, @RequestParam(required = false) String endPeriod)
     {
-        return new ResponseEntity<>(diseaseMetricsService.findDiseaseMetricsWithParams(diseaseName, regionName, startPeriod, endPeriod), HttpStatus.OK);
+        return new ResponseEntity<>(diseaseMetricsFacade.findDiseaseMetricsWithParamsAndDate(diseaseName, regionName, startPeriod, endPeriod), HttpStatus.OK);
     }
 }
