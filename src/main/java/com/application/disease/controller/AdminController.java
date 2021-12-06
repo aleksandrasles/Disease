@@ -6,6 +6,7 @@ import com.application.disease.dao.UserRepository;
 import com.application.disease.model.Disease;
 import com.application.disease.model.Region;
 import com.application.disease.model.User;
+import com.application.disease.model.dto.RequestDto;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,6 +32,24 @@ public class AdminController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @RequestMapping("/test_builder")
+    public ResponseEntity<RequestDto> testBuilder() {
+        RequestDto requestDto = RequestDto.newBuilder()
+                .setId("1")
+                .setDiseaseName("Covid-19")
+                .setRegionName("Kyiv")
+                .setNumberOfIll(3)
+                .setNumberOfRecovered(20)
+                .setUserId("2")
+                .build();
+        return new ResponseEntity<>(requestDto, HttpStatus.OK);
+    }
+
+    @RequestMapping("/test_singleton1")
+    public void testSingleton1() {
+        System.out.println(bCryptPasswordEncoder);
+    }
 
     @RequestMapping("/homepage")
     public ModelAndView homePage() {

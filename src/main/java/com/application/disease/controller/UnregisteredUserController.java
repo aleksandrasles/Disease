@@ -5,6 +5,7 @@ import com.application.disease.service.DiseaseMetricsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -15,7 +16,15 @@ import java.util.List;
 public class UnregisteredUserController {
 
     @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
     private DiseaseMetricsService diseaseMetricsService;
+
+    @RequestMapping("/test_singleton2")
+    public void testSingleton2() {
+        System.out.println(bCryptPasswordEncoder);
+    }
 
     @RequestMapping("/")
     public @ResponseBody String greeting() {

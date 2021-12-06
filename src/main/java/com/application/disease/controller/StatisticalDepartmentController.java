@@ -55,7 +55,6 @@ public class StatisticalDepartmentController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        requestDto.setId("11111");
         DiseaseMetrics diseaseMetrics = null;
         diseaseMetrics = diseaseMetricsService.updateDiseaseMetricsByRequestDto(diseaseMetrics, requestDto);
         return new ResponseEntity<>(diseaseMetrics, HttpStatus.OK);
