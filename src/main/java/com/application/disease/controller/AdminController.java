@@ -1,7 +1,12 @@
 package com.application.disease.controller;
 
+import com.application.disease.dao.DiseaseRepository;
+import com.application.disease.dao.RegionRepository;
 import com.application.disease.dao.UserRepository;
+import com.application.disease.model.Disease;
+import com.application.disease.model.Region;
 import com.application.disease.model.User;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +21,13 @@ import java.util.List;
 public class AdminController {
 
     @Autowired
-    BCryptPasswordEncoder bCryptPasswordEncoder;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    private DiseaseRepository diseaseRepository;
+
+    @Autowired
+    private RegionRepository regionRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -65,6 +76,50 @@ public class AdminController {
     @DeleteMapping("/users/{id}")
     public ResponseEntity<User> deleteUserById(@PathVariable("id") String id){
         userRepository.deleteUser(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/diseases")
+    public ResponseEntity<List<Disease>> getAllDiseases(){
+        return new ResponseEntity<>(diseaseRepository.findAll(), HttpStatus.OK);
+    }
+
+    @PostMapping("/diseases/add")
+    public ResponseEntity<Disease> addDisease(@RequestBody Disease disease) {
+        if(disease == null || StringUtils.isBlank(disease.getName())) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(diseaseRepository.create(disease), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/diseases/{id}")
+    public ResponseEntity<Disease> deleteDisease(@PathVariable("id") String id) {
+        if(id == null || diseaseRepository.findById(id) == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        diseaseRepository.removeById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/regions")
+    public ResponseEntity<List<Region>> getAllRegions(){
+        return new ResponseEntity<>(regionRepository.findAll(), HttpStatus.OK);
+    }
+
+    @PostMapping("/regions/add")
+    public ResponseEntity<Region> addRegion(@RequestBody Region region) {
+        if(region == null || StringUtils.isBlank(region.getName())) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(regionRepository.create(region), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/regions/{id}")
+    public ResponseEntity<Disease> deleteRegion(@PathVariable("id") String id) {
+        if(id == null || regionRepository.findById(id) == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        regionRepository.removeById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

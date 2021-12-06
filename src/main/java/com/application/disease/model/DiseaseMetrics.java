@@ -21,9 +21,9 @@ public class DiseaseMetrics {
 
     private int numberOfRecovered = 0;
 
-    private LocalDateTime lastUpdatedAt = LocalDateTime.now();
+    private LocalDateTime updatedAt = LocalDateTime.now();
 
-    private final LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     public DiseaseMetrics(String diseaseName, String regionName, int numberOfIll, int numberOfRecovered) {
         this.diseaseName = diseaseName;
@@ -76,14 +76,19 @@ public class DiseaseMetrics {
         this.numberOfIll = numberOfIll;
     }
 
-    public LocalDateTime getLastUpdatedAt() {
-        return lastUpdatedAt;
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setLastUpdatedAt(LocalDateTime lastUpdatedAt) {
-        this.lastUpdatedAt = lastUpdatedAt;
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public LocalDateTime getCreatedAt() {return createdAt;}
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
 
 }

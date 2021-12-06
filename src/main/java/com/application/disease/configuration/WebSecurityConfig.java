@@ -29,7 +29,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                    .antMatchers("/api/v*/homepage/**").permitAll()
+                    .antMatchers("/homepage/**").permitAll()
                 .antMatchers("/api/v*/**").permitAll()
 //                    .antMatchers("/api/v*/admin/**").access("hasRole('ROLE_ADMIN')")
 //                    .antMatchers("/api/v*/statistical_department.html/**").access("hasRole('ROLE_STATISTICAL_DEPARTMENT')")
@@ -40,7 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .successHandler(successHandler)
                 .permitAll()
                 .and().logout()
-                .logoutUrl("/homepage");
+                .logoutUrl("/api/v*/**/logout");
     }
 
     @Override

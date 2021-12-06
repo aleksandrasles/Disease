@@ -9,6 +9,8 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class RegionRepositoryImpl implements RegionRepository {
     @Autowired
@@ -17,6 +19,11 @@ public class RegionRepositoryImpl implements RegionRepository {
     @Override
     public Region create(Region region) {
         return mongoTemplate.insert(region);
+    }
+
+    @Override
+    public List<Region> findAll() {
+       return mongoTemplate.findAll(Region.class);
     }
 
     @Override

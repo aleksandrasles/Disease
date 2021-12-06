@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -42,6 +43,9 @@ public class DiseaseMetricsRepositoryImpl implements DiseaseMetricsRepository {
     public DiseaseMetrics findByDiseaseAndRegion(String diseaseName, String regionName) {
         Query query = Query.query(Criteria.where("regionName").is(regionName))
                 .addCriteria(Criteria.where("diseaseName").is(diseaseName));
+        if(mongoTemplate.find(query, DiseaseMetrics.class).isEmpty()){
+            return null;
+        }
         return mongoTemplate.find(query, DiseaseMetrics.class).get(0);
     }
 
