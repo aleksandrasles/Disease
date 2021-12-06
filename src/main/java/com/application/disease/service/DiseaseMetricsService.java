@@ -6,8 +6,11 @@ import com.application.disease.model.dto.RequestDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class DiseaseMetricsService {
@@ -22,14 +25,14 @@ public class DiseaseMetricsService {
             newDiseaseMetrics.setRegion(requestDto.getRegionName());
             newDiseaseMetrics.setNumberOfIll(newDiseaseMetrics.getNumberOfIll());
             newDiseaseMetrics.setNumberOfRecovered(newDiseaseMetrics.getNumberOfRecovered());
-            newDiseaseMetrics.setLastUpdatedAt(LocalDateTime.now());
+            newDiseaseMetrics.setUpdatedAt(LocalDateTime.now());
             diseaseMetricsRepository.crete(newDiseaseMetrics);
             diseaseMetrics = newDiseaseMetrics;
         } else {
             diseaseMetrics = diseaseMetricsRepository.findByDiseaseAndRegion(requestDto.getDiseaseName(), requestDto.getRegionName());
             diseaseMetrics.addNumOfIll(requestDto.getNumberOfIll());
             diseaseMetrics.addNumOfRecovered(requestDto.getNumberOfRecovered());
-            diseaseMetrics.setLastUpdatedAt(LocalDateTime.now());
+            diseaseMetrics.setUpdatedAt(LocalDateTime.now());
             diseaseMetricsRepository.update(diseaseMetrics);
         }
 
@@ -51,16 +54,25 @@ public class DiseaseMetricsService {
         return diseaseMetricsRepository.findAll();
     }
 
-    public List<DiseaseMetrics> findDiseaseMetricsDuringPeriod(String diseaseName, String regionName, String startedAt, String endedAt) {
+    public List<DiseaseMetrics> findDiseaseMetricsWithParams(String diseaseName, String regionName, String startedAt, String endedAt) {
+        LocalDateTime start = LocalDateTime.ofInstant(Instant.parse(startedAt + "T22:00:00.000Z"), ZoneId.systemDefault());
+        LocalDateTime end = LocalDateTime.ofInstant(Instant.parse(endedAt + "T22:00:00.000Z"), ZoneId.systemDefault());
+
         List<DiseaseMetrics> diseaseMetricsList = findDiseaseMetricsWithParams(diseaseName, regionName);
-        if (startedAt != null && endedAt != null) {
-          //  LocalDateTime lastTimeOfPeriod = LocalDateTime.now().minusDays(days);
-            return diseaseMetricsList;
+        LocalDateTime dateTime = start.minusDays(1);
+        if(start.isEqual(end)) {
+           return diseaseMetricsList
+                    .stream()
+                    .filter(diseaseMetrics -> diseaseMetrics.getUpdatedAt().isBefore(end) &&
+                            diseaseMetrics.getUpdatedAt().isAfter(dateTime))
+                    .collect(Collectors.toList());
         }
-        return null;
+
+        return diseaseMetricsList
+                .stream()
+                .filter(diseaseMetrics -> diseaseMetrics.getUpdatedAt().isAfter(start))
+                .filter(diseaseMetrics -> diseaseMetrics.getUpdatedAt().isBefore(end))
+                .collect(Collectors.toList());
 
     }
-
-
-
 }

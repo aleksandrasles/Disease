@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 @RequestMapping("/api/v1/ministry_of_health")
@@ -30,7 +33,7 @@ public class MinistryOfHealthController {
 
     @RequestMapping("/homepage")
     public ModelAndView homePage() {
-        return new ModelAndView("dashboards/statistical_department");
+        return new ModelAndView("dashboards/ministry_of_health");
     }
 
     @GetMapping("/find")
@@ -42,7 +45,8 @@ public class MinistryOfHealthController {
     @GetMapping("/statistics")
     public ResponseEntity<List<DiseaseMetrics>> getStatisticsWithParams(
             @RequestParam(required = false) String diseaseName, @RequestParam(required = false) String regionName,
-            @RequestParam(required = false) String startPeriod, @RequestParam(required = false) String endPeriod) {
-        return new ResponseEntity<>(diseaseMetricsService.findDiseaseMetricsWithParams(diseaseName, regionName), HttpStatus.OK);
+            @RequestParam(required = false) String startPeriod, @RequestParam(required = false) String endPeriod)
+    {
+        return new ResponseEntity<>(diseaseMetricsService.findDiseaseMetricsWithParams(diseaseName, regionName, startPeriod, endPeriod), HttpStatus.OK);
     }
 }
