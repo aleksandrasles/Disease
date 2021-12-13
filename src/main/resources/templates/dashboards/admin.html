@@ -63,6 +63,7 @@
 
             $(".user-edit-btn").click((event) =>{
 
+              $('#modal_title_users').text("Edit user");
               $("#inputPassword").hide();
               $("#inputStateRoles").hide();
               $("#btn_add").hide();
@@ -104,7 +105,7 @@
                   $("#inputEmail").val(null);
                   $("#inputFirstName").val(null);
                   $("#inputLastName").val(null);
-                  $("#btn_close").click()
+                  $("#btn_close_users").click()
                   $("#loadUsersBtn").click();
                 }
               });
@@ -136,28 +137,259 @@
           type: "POST",
           data: JSON.stringify(jsonVar),
           contentType: "application/json",
-          url:"http://localhost:8080/api/v1/admin/users/add",
+          url:"http://localhost:8080/api/v1/admin/diseases/add",
           success: function (data) {
             jsonVar = null;
             $("#inputEmail").val(null);
             $("#inputFirstName").val(null);
             $("#inputLastName").val(null);
-            $("#inputPasswordField").val(null),
+            $("#inputPasswordField").val(null)
             $("#inputStateRolesField").val(null)
-            $("#btn_close").click()
-            $("#loadUsersBtn").click();
+            $("#btn_close_users").click()
+            $("#loadDiseasesBtn").click();
           }
         });
       });
+
+      $(".btn-close-users").click(function () {
+        $("#inputEmail").val(null);
+        $("#inputFirstName").val(null);
+        $("#inputLastName").val(null);
+        $("#inputPasswordField").val(null)
+      })
     });
+
+
+    $( document ).ready(function() {
+      var gbmap_diseases;
+      var current_disease_id;
+
+      $("#loadDiseasesBtn").click(() => {
+        $("#loadDiseasesBtn").html("<span class=\"spinner-border spinner-border-sm\" role=\"status\" aria-hidden=\"true\"></span>Loading...")
+        setTimeout(() => {
+          $.get("/api/v1/admin/diseases", function (data) {
+            console.log(data);
+            let rows = "";
+            let rowNumber = 1;
+            gbmap_diseases = new Map();
+            data.forEach(function (row) {
+              gbmap_diseases.set(row.id, row);
+              current_disease_id = row.id;
+              rows += `<tr>
+                        <th scope="row">${rowNumber++}</th>
+                        <td>${row.name}</td>
+                        <td>${row.description}</td>
+                        <td><button type='button' class='btn btn-danger disease-remove-btn' value="${row.id}">Delete</button></td>
+                        <td><button type="button" class="btn btn-primary disease-edit-btn" data-bs-toggle="modal" data-bs-target="#save_DiseasesModal" value="${row.id}">Edit</button></td>
+                      </tr>`;
+            });
+            $("#diseasesList tbody").html(rows);
+            $("#loadDiseasesBtn").html("Load diseases");
+
+            $(".disease-remove-btn").click((event) =>{
+              let id = $(event.target).attr("value");
+              console.log(id);
+              $.ajax({
+                type:"DELETE",
+                url:"http://localhost:8080/api/v1/admin/diseases/" + id,
+                success: function(data){
+                  $("#loadDiseasesBtn").click();
+                }
+              });
+            });
+
+            $(".disease-edit-btn").click((event) =>{
+
+              $("#btn_add_disease").hide();
+              $("#btn_save_disease").show();
+
+              let id = $(event.target).attr("value");
+              current_disease_id = id;
+              let disease = gbmap_diseases.get(id);
+
+              $("#inputDiseaseName").val(disease.name);
+              $("#inputDescription").val(disease.description);
+            });
+
+            $("#btn_save_disease").click(function() {
+
+              let jsonVar = {
+                name: $("#inputDiseaseName").val(),
+                description: $("#inputDescription").val(),
+              };
+
+              $.ajax({
+                type: "PUT",
+                data: JSON.stringify(jsonVar),
+                contentType: "application/json",
+                url:"http://localhost:8080/api/v1/admin/diseases/" + current_disease_id,
+                success: function (data) {
+                  jsonVar = null;
+                  $("#inputDiseaseName").val(null);
+                  $("#inputDescription").val(null);
+                  $("#btn_close_disease").click()
+                  $("#loadDiseasesBtn").click();
+                }
+              });
+            });
+          });
+        }, 2000);
+      })
+      $("#addDiseasesBtn").click(() => {
+        $("#btn_save_disease").hide();
+        $("#btn_add_disease").show();
+      });
+      $("#btn_add_disease").click(function() {
+
+        let jsonVar = {
+          name: $("#inputDiseaseName").val(),
+          description: $("#inputDescription").val(),
+        };
+
+        $.ajax({
+          type: "POST",
+          data: JSON.stringify(jsonVar),
+          contentType: "application/json",
+          url:"http://localhost:8080/api/v1/admin/diseases/add",
+          success: function (data) {
+            jsonVar = null;
+            $("#inputDiseaseName").val(null)
+            $("#inputDescription").val(null)
+            $("#btn_close_disease").click()
+            $("#loadDiseasesBtn").click();
+          }
+        });
+      });
+      
+      $(".btn-close-disease").click(function () {
+        $("#inputDiseaseName").val(null)
+        $("#inputDescription").val(null)
+      })
+    });
+
+
+    $( document ).ready(function() {
+      var gbmap_regions;
+      var current_region_id;
+
+      $("#loadRegionsBtn").click(() => {
+        $("#loadRegionsBtn").html("<span class=\"spinner-border spinner-border-sm\" role=\"status\" aria-hidden=\"true\"></span>Loading...")
+        setTimeout(() => {
+          $.get("/api/v1/admin/regions", function (data) {
+            console.log(data);
+            let rows = "";
+            let rowNumber = 1;
+            gbmap_regions = new Map();
+            data.forEach(function (row) {
+              gbmap_regions.set(row.id, row);
+              current_region_id = row.id;
+              rows += `<tr>
+                        <th scope="row">${rowNumber++}</th>
+                        <td>${row.name}</td>
+                        <td><button type='button' class='btn btn-danger region-remove-btn' value="${row.id}">Delete</button></td>
+                        <td><button type="button" class="btn btn-primary region-edit-btn" data-bs-toggle="modal" data-bs-target="#save_RegionsModal" value="${row.id}">Edit</button></td>
+                      </tr>`;
+            });
+            $("#regionsList tbody").html(rows);
+            $("#loadRegionsBtn").html("Load diseases");
+
+            $(".region-remove-btn").click((event) =>{
+              let id = $(event.target).attr("value");
+              console.log(id);
+              $.ajax({
+                type:"DELETE",
+                url:"http://localhost:8080/api/v1/admin/regions/" + id,
+                success: function(data){
+                  $("#loadRegionsBtn").click();
+                }
+              });
+            });
+
+            $(".region-edit-btn").click((event) =>{
+
+              $("#btn_add_region").hide();
+              $("#btn_save_region").show();
+
+              let id = $(event.target).attr("value");
+              current_region_id = id;
+              let region = gbmap_regions.get(id);
+
+              $("#inputRegionName").val(region.name);
+            });
+
+            $("#btn_save_region").click(function() {
+
+              let jsonVar = {
+                name: $("#inputRegionName").val()
+              };
+
+              $.ajax({
+                type: "PUT",
+                data: JSON.stringify(jsonVar),
+                contentType: "application/json",
+                url:"http://localhost:8080/api/v1/admin/regions/" + current_region_id,
+                success: function (data) {
+                  jsonVar = null;
+                  $("#inputRegionName").val(null);
+                  $("#btn_close_region").click()
+                  $("#loadRegionsBtn").click();
+                }
+              });
+            });
+          });
+        }, 2000);
+      })
+      $("#addRegionsBtn").click(() => {
+        $("#btn_save_region").hide();
+        $("#btn_add_region").show();
+      });
+      $("#btn_add_region").click(function() {
+
+        let jsonVar = {
+          name: $("#inputRegionName").val()
+        };
+
+        $.ajax({
+          type: "POST",
+          data: JSON.stringify(jsonVar),
+          contentType: "application/json",
+          url:"http://localhost:8080/api/v1/admin/regions/add",
+          success: function (data) {
+            jsonVar = null;
+            $("#inputRegionName").val(null)
+            $("#btn_close_region").click()
+            $("#loadRegionsBtn").click();
+          }
+        });
+      });
+
+      $(".btn-close-region").click(function () {
+        $("#inputRegionName").val(null)
+      })
+    });
+
   </script>
 </head>
   <body>
-    <nav class="navbar navbar-dark bg-dark">
-      <div class="container-fluid">
-        <span class="navbar-brand mb-0 h1">Manage users</span>
-      </div>
-    </nav>
+  <div style="display: flex;justify-content: space-between" class="bg-dark">
+    <div>
+      <ul class="nav nav-tabs navbar-dark bg-dark" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="users-tab" data-bs-toggle="tab" data-bs-target="#users" type="button" role="tab" aria-controls="users" aria-selected="true">Users</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="diseases-tab" data-bs-toggle="tab" data-bs-target="#diseases" type="button" role="tab" aria-controls="diseases" aria-selected="false">Diseases</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="regions-tab" data-bs-toggle="tab" data-bs-target="#regions" type="button" role="tab" aria-controls="regions" aria-selected="false">Regions</button>
+      </ul>
+    </div>
+    <div>
+      <a href="/logout" class="btn btn-success" role="button" aria-disabled="true" style="margin-top: 2px;margin-right: 3px">Sigh out</a>
+    </div>
+  </div>
+  <div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="users" role="tabpanel" aria-labelledby="users-tab">
     <button id="loadUsersBtn" type="button" class="btn btn-primary">Load users</button>
     <button id="addUsersBtn" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#save_Modal">Add user</button>
     <table id="usersList" class="table">
@@ -180,8 +412,8 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Modal title</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <h5 class="modal-title" id="modal_title_users">Modal title</h5>
+            <button type="button" class="btn-close btn-close-users" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
             <form id="editForm">
@@ -223,12 +455,105 @@
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btn_close">Close</button>
+            <button type="button" class="btn btn-secondary btn-close-users" data-bs-dismiss="modal" id="btn_close_users">Close</button>
             <button type="button" class="btn btn-primary" id="btn_save">Save</button>
             <button type="button" class="btn btn-primary" id="btn_add">Add</button>
           </div>
         </div>
       </div>
     </div>
+    </div>
+
+
+    <div class="tab-pane fade" id="diseases" role="tabpanel" aria-labelledby="diseases-tab">
+      <button id="loadDiseasesBtn" type="button" class="btn btn-primary">Load diseases</button>
+      <button id="addDiseasesBtn" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#save_DiseasesModal">Add disease</button>
+      <table id="diseasesList" class="table">
+        <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Disease name</th>
+          <th scope="col">Description</th>
+          <th scope="col">Delete</th>
+          <th scope="col">Edit</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+      <div class="modal" tabindex="-1" id="save_DiseasesModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modal_title_diseases">Modal title</h5>
+              <button type="button" class="btn-close btn-close-disease" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form id="editDiseaseForm">
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="inputDiseaseName">FirstName</label>
+                    <input type="text" class="form-control" id="inputDiseaseName" required minlength="2" maxlength="30"/>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="inputDescription">LastName</label>
+                    <input type="text" class="form-control" id="inputDescription"/>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary btn-close-disease" id="btn_close_disease" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" id="btn_save_disease">Save</button>
+              <button type="button" class="btn btn-primary" id="btn_add_disease">Add</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="tab-pane fade" id="regions" role="tabpanel" aria-labelledby="regions-tab">
+      <button id="loadRegionsBtn" type="button" class="btn btn-primary">Load regions</button>
+      <button id="addRegionsBtn" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#save_RegionsModal">Add region</button>
+      <table id="regionsList" class="table">
+        <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Region name</th>
+          <th scope="col">Delete</th>
+          <th scope="col">Edit</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+      <div class="modal" tabindex="-1" id="save_RegionsModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modal_title_regions">Modal title</h5>
+              <button type="button" class="btn-close btn-close-region" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form id="editRegionForm">
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="inputDiseaseName">Region name:</label>
+                    <input type="text" class="form-control" id="inputRegionName" required minlength="2" maxlength="30"/>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary btn-close-disease" id="btn_close_region" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" id="btn_save_region">Save</button>
+              <button type="button" class="btn btn-primary" id="btn_add_region">Add</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   </body>
 </html>

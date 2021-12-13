@@ -1,8 +1,10 @@
 package com.application.disease.model;
 
+import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+@Data
 @Document("diseases")
 public class Disease {
 
@@ -13,22 +15,6 @@ public class Disease {
 
     public Disease(String name, String description) {
         this.name = name;
-        this.description = description;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
         this.description = description;
     }
 }

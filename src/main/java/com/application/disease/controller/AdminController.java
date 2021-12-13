@@ -92,6 +92,15 @@ public class AdminController {
         return new ResponseEntity<>(diseaseRepository.create(disease), HttpStatus.OK);
     }
 
+    @PutMapping("/diseases/{id}")
+    public ResponseEntity<Disease> updateDisease(@RequestBody Disease disease, @PathVariable("id") String id) {
+        if(disease == null || StringUtils.isBlank(disease.getName())) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        disease.setId(id);
+        return new ResponseEntity<>(diseaseRepository.update(disease), HttpStatus.OK);
+    }
+
     @DeleteMapping("/diseases/{id}")
     public ResponseEntity<Disease> deleteDisease(@PathVariable("id") String id) {
         if(id == null || diseaseRepository.findById(id) == null) {
@@ -112,6 +121,15 @@ public class AdminController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(regionRepository.create(region), HttpStatus.OK);
+    }
+
+    @PutMapping("/regions/{id}")
+    public ResponseEntity<Region> updateRegion(@RequestBody Region region, @PathVariable("id") String id) {
+        if(region == null || StringUtils.isBlank(region.getName())) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        region.setId(id);
+        return new ResponseEntity<>(regionRepository.update(region), HttpStatus.OK);
     }
 
     @DeleteMapping("/regions/{id}")
