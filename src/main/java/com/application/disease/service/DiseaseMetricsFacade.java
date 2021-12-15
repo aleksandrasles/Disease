@@ -1,11 +1,10 @@
 package com.application.disease.service;
 
-import com.application.disease.dao.DiseaseMetricsRepository;
 import com.application.disease.model.DiseaseMetrics;
 import com.application.disease.model.dto.RequestDto;
 import com.application.disease.service.facade.CheckerForDiseaseNameAndRegionName;
-import com.application.disease.service.facade.Finder;
-import com.application.disease.service.facade.Updater;
+import com.application.disease.service.facade.FinderOfDiseaseMetrics;
+import com.application.disease.service.facade.UpdaterOfDiseaseMetrics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,13 +16,16 @@ import java.util.List;
 @Service
 public class DiseaseMetricsFacade {
 
-    private final Updater updater;
+    @Autowired
+    private final UpdaterOfDiseaseMetrics updater;
 
-    private final Finder finder;
+    @Autowired
+    private final FinderOfDiseaseMetrics finder;
 
+    @Autowired
     private final CheckerForDiseaseNameAndRegionName checker;
 
-    public DiseaseMetricsFacade(Updater updater, Finder finder, CheckerForDiseaseNameAndRegionName checker) {
+    public DiseaseMetricsFacade(UpdaterOfDiseaseMetrics updater, FinderOfDiseaseMetrics finder, CheckerForDiseaseNameAndRegionName checker) {
         this.updater = updater;
         this.finder = finder;
         this.checker = checker;

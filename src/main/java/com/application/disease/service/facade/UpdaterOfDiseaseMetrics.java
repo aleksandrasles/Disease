@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 
 @Component
-public class Updater {
+public class UpdaterOfDiseaseMetrics {
 
     @Autowired
     private DiseaseMetricsRepository diseaseMetricsRepository;
