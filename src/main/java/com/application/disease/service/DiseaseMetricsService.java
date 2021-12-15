@@ -2,7 +2,7 @@ package com.application.disease.service;
 
 import com.application.disease.dao.DiseaseMetricsRepository;
 import com.application.disease.model.DiseaseMetrics;
-import com.application.disease.model.dto.RequestDto;
+import com.application.disease.model.dto.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,20 +18,22 @@ public class DiseaseMetricsService {
     @Autowired
     private DiseaseMetricsRepository diseaseMetricsRepository;
 
-    public DiseaseMetrics updateDiseaseMetricsByRequestDto(DiseaseMetrics diseaseMetrics, RequestDto requestDto) {
-        if(diseaseMetricsRepository.findByDiseaseAndRegion(requestDto.getDiseaseName(), requestDto.getRegionName()) == null) {
+    public DiseaseMetrics updateDiseaseMetricsByRequestDto(DiseaseMetrics diseaseMetrics, Request request) {
+        if(diseaseMetricsRepository.findByDiseaseAndRegion(request.getDiseaseName(), request.getRegionName()) == null) {
             DiseaseMetrics newDiseaseMetrics= new DiseaseMetrics();
-            newDiseaseMetrics.setName(requestDto.getDiseaseName());
-            newDiseaseMetrics.setRegion(requestDto.getRegionName());
-            newDiseaseMetrics.setNumberOfIll(newDiseaseMetrics.getNumberOfIll());
+            newDiseaseMetrics.setDiseaseName(request.getDiseaseName());
+            newDiseaseMetrics.setRegionName(request.getRegionName());
             newDiseaseMetrics.setNumberOfRecovered(newDiseaseMetrics.getNumberOfRecovered());
+            newDiseaseMetrics.setNumberOfRecovered(newDiseaseMetrics.getNumberOfRecovered());
+            newDiseaseMetrics.setNumberOfDeaths(newDiseaseMetrics.getNumberOfDeaths());
             newDiseaseMetrics.setUpdatedAt(LocalDateTime.now());
             diseaseMetricsRepository.crete(newDiseaseMetrics);
             diseaseMetrics = newDiseaseMetrics;
         } else {
-            diseaseMetrics = diseaseMetricsRepository.findByDiseaseAndRegion(requestDto.getDiseaseName(), requestDto.getRegionName());
-            diseaseMetrics.addNumOfIll(requestDto.getNumberOfIll());
-            diseaseMetrics.addNumOfRecovered(requestDto.getNumberOfRecovered());
+            diseaseMetrics = diseaseMetricsRepository.findByDiseaseAndRegion(request.getDiseaseName(), request.getRegionName());
+            diseaseMetrics.setNumberOfCases(diseaseMetrics.getNumberOfCases() + request.getNumberOfCases());
+            diseaseMetrics.setNumberOfRecovered(diseaseMetrics.getNumberOfRecovered() + request.getNumberOfRecovered());
+            diseaseMetrics.setNumberOfDeaths(diseaseMetrics.getNumberOfDeaths() + request.getNumberOfDeaths());
             diseaseMetrics.setUpdatedAt(LocalDateTime.now());
             diseaseMetricsRepository.update(diseaseMetrics);
         }
@@ -73,6 +75,5 @@ public class DiseaseMetricsService {
                 .filter(diseaseMetrics -> diseaseMetrics.getUpdatedAt().isAfter(start))
                 .filter(diseaseMetrics -> diseaseMetrics.getUpdatedAt().isBefore(end))
                 .collect(Collectors.toList());
-
     }
 }
