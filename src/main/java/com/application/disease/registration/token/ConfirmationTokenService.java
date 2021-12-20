@@ -1,4 +1,4 @@
-package com.application.restaurant.registration.token;
+package com.application.disease.registration.token;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

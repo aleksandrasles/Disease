@@ -1,4 +1,4 @@
-package com.application.restaurant.registration;
+package com.application.disease.registration;
 
 import org.springframework.stereotype.Component;
 

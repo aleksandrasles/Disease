@@ -1,7 +1,8 @@
-package com.application.restaurant.registration.token;
+package com.application.disease.registration.token;
 
 import com.application.restaurant.model.User;
-import lombok.*;
+import lombok.Data;
+import lombok.NonNull;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 

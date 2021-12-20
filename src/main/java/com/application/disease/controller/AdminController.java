@@ -6,8 +6,10 @@ import com.application.disease.dao.UserRepository;
 import com.application.disease.model.Disease;
 import com.application.disease.model.Region;
 import com.application.disease.model.User;
+import com.application.disease.strategy.GeneralRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,14 +25,26 @@ public class AdminController {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Autowired
-    private DiseaseRepository diseaseRepository;
-
-    @Autowired
-    private RegionRepository regionRepository;
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    @Qualifier("general_disease")
+    private GeneralRepository<Disease> diseaseRepository;
+
+    @Autowired
+    @Qualifier("general_region")
+    private GeneralRepository<Region> regionRepository;
+
+    @GetMapping("/diseases")
+    public ResponseEntity<List<Disease>> getAllDiseases(){
+        return new ResponseEntity<>(diseaseRepository.findAll(), HttpStatus.OK);
+    }
+    @GetMapping("/regions")
+    public ResponseEntity<List<Region>> getAllRegions(){
+        return new ResponseEntity<>(regionRepository.findAll(), HttpStatus.OK);
+    }
 
     @RequestMapping("/homepage")
     public ModelAndView homePage() {
@@ -79,11 +93,6 @@ public class AdminController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/diseases")
-    public ResponseEntity<List<Disease>> getAllDiseases(){
-        return new ResponseEntity<>(diseaseRepository.findAll(), HttpStatus.OK);
-    }
-
     @PostMapping("/diseases/add")
     public ResponseEntity<Disease> addDisease(@RequestBody Disease disease) {
         if(disease == null || StringUtils.isBlank(disease.getName())) {
@@ -108,11 +117,6 @@ public class AdminController {
         }
         diseaseRepository.removeById(id);
         return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @GetMapping("/regions")
-    public ResponseEntity<List<Region>> getAllRegions(){
-        return new ResponseEntity<>(regionRepository.findAll(), HttpStatus.OK);
     }
 
     @PostMapping("/regions/add")

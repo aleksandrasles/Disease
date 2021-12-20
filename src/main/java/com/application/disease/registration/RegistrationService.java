@@ -1,10 +1,10 @@
-package com.application.restaurant.registration;
+package com.application.disease.registration;
 
 import com.application.restaurant.email.EmailSender;
-import com.application.restaurant.registration.token.ConfirmationToken;
-import com.application.restaurant.registration.token.ConfirmationTokenService;
 import com.application.restaurant.model.User;
 import com.application.restaurant.model.UserRoles;
+import com.application.restaurant.registration.token.ConfirmationToken;
+import com.application.restaurant.registration.token.ConfirmationTokenService;
 import com.application.restaurant.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

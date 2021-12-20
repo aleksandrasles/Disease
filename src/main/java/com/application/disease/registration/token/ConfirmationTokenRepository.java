@@ -1,7 +1,6 @@
-package com.application.restaurant.registration.token;
+package com.application.disease.registration.token;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
