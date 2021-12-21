@@ -9,7 +9,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -29,9 +31,13 @@ public class UserService implements UserDetailsService {
     }
 
     public void deleteUser(User user) {
-        userRepository.deleteUser(user.getId());
+        if (user != null) {
+            userRepository.deleteUser(user.getId());
+        }
     }
 
-    public List<User> getAllUsers() {return userRepository.findAllUsers();}
+    public void enableUser(String email) {
+        userRepository.findByEmail(email).ifPresent(u -> userRepository.updateUser(u.enable()));
+    }
 
 }

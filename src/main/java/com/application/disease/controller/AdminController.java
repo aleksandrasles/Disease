@@ -1,11 +1,7 @@
 package com.application.disease.controller;
 
-import com.application.disease.dao.DiseaseRepository;
-import com.application.disease.dao.RegionRepository;
 import com.application.disease.dao.UserRepository;
-import com.application.disease.model.Disease;
-import com.application.disease.model.Region;
-import com.application.disease.model.User;
+import com.application.disease.model.*;
 import com.application.disease.strategy.GeneralRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +32,20 @@ public class AdminController {
     @Autowired
     @Qualifier("general_region")
     private GeneralRepository<Region> regionRepository;
+
+    @GetMapping("/test")
+    public void testMomento(){
+       User user = new User("Ivan", "Ivanov", "iv.iv@gmail.com","123456", UserRoles.ROLE_ADMIN);
+
+        UserEditor userEditor = new UserEditor(user);
+        user.setFirstName("Oleg");
+        userEditor.hitSave();
+        System.out.println(userEditor.print().getFirstName());
+        user.setFirstName("Petro");
+        System.out.println(userEditor.print().getFirstName());
+        userEditor.hitUndo();
+        System.out.println(userEditor.print().getFirstName());
+    }
 
     @GetMapping("/diseases")
     public ResponseEntity<List<Disease>> getAllDiseases(){

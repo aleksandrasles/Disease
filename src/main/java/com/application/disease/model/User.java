@@ -13,7 +13,6 @@ import java.util.Collections;
 @Getter
 @Setter
 @EqualsAndHashCode
-@NoArgsConstructor
 @Document("users")
 public class User implements UserDetails {
 
@@ -26,6 +25,9 @@ public class User implements UserDetails {
     private UserRoles userRoles;
     private Boolean locked = false;
     private Boolean enabled = false;
+    public User currentUser;
+
+    public User(){this.currentUser = this;}
 
     public User(String firstName,
                 String lastName,
@@ -37,6 +39,15 @@ public class User implements UserDetails {
         this.email = email;
         this.password = password;
         this.userRoles = userRoles;
+        this.currentUser = this;
+    }
+
+    public UserState save() {
+        return new UserState(this.currentUser);
+    }
+
+    public void restore(UserState save) {
+        currentUser = save.getUser();
     }
 
     @Override
