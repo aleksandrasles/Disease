@@ -1,7 +1,5 @@
 package com.application.disease.controller;
 
-import com.application.disease.dao.DiseaseRepository;
-import com.application.disease.dao.RegionRepository;
 import com.application.disease.dao.UserRepository;
 import com.application.disease.model.Disease;
 import com.application.disease.model.Region;

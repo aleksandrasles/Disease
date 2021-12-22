@@ -34,4 +34,8 @@ public class UserService implements UserDetailsService {
 
     public List<User> getAllUsers() {return userRepository.findAllUsers();}
 
+    public void enableUser(String email) {
+        userRepository.findByEmail(email).ifPresent(u -> userRepository.updateUser(u.enable()));
+    }
+
 }
